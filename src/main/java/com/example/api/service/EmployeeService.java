@@ -52,7 +52,66 @@ public class EmployeeService {
     }
 
     //Mise a jour complete (PUT) sans trop de if
+    public Employee updateEmployee(final Long id, EmployeeUpdateDTO dto) {
+        Employee employee = getEmployee(id);
+        if (!employee.getMail().equalsIgnoreCase(dto.getMail()) && employeeRepository.existsByMail(dto.getMail())) {
+            throw new EmailAlreadyUsedException(dto.getMail());
+        }
+        employee.setFirstName(dto.getFirstName());
+        employee.setLastName(dto.getLastName());
+        employee.setMail(dto.getMail());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            employee.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        if (dto.getRole() != null && !dto.getRole().isBlank()) {
+            employee.setRole(dto.getRole());
+        }
+        return employeeRepository.save(employee);
+    }
 
-    // Mise a jour sequentiel avec plusieur if
+
+    public Employee updateEmployee(final Long id, EmployeeUpdateDTO dto) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isEmpty()) {
+            return null;
+        }
+
+        Employee employee = optionalEmployee.get();
+        employee.setFirstName(dto.getFirstName());
+        employee.setLastName(dto.getLastName());
+        employee.setMail(dto.getMail());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            employee.setPassword(dto.getPassword());
+        }
+
+        return employeeRepository.save(employee);
+    }
+
+    /**
+     * Mise à jour partielle (PATCH).
+     */
+    public Employee partialUpdate(final Long id, EmployeePatchdto dto) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isEmpty()) {
+            return null;
+        }
+
+        Employee employee = optionalEmployee.get();
+
+        if (dto.getFirstName() != null) {
+            employee.setFirstName(dto.getFirstName());
+        }
+        if (dto.getLastName() != null) {
+            employee.setLastName(dto.getLastName());
+        }
+        if (dto.getMail() != null) {
+            employee.setEmail(dto.getMail());
+        }
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            employee.setPassword(dto.getPassword());
+        }
+
+        return employeeRepository.save(employee);
+    }
     
 }

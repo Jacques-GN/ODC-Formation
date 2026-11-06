@@ -1,4 +1,5 @@
 package com.example.api.service;
+package com.example.api.mapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;

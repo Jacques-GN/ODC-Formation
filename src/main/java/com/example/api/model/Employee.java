@@ -37,6 +37,8 @@ public class Employee {
     /** Mot de passe associé au compte. */
     @Column(name = "password")
     private String password;
+    private Int salaire;
+    private Int numero;
 
     
 }

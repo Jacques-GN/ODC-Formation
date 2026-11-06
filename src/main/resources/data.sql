@@ -4,6 +4,8 @@ CREATE TABLE employees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(250) NOT NULL,
     last_name VARCHAR(250) NOT NULL,
+    numero INT(28),
+    salaire INT(25),
     mail VARCHAR(250) NOT NULL,
     position VARCHAR(250) NOT NULL,
     password VARCHAR(250) NOT NULL
